@@ -4506,6 +4506,8 @@ in {
 
   jira = callPackage ../development/python-modules/jira { };
 
+  jisho-api = callPackage ../development/python-modules/jisho-api { };
+
   jmespath = callPackage ../development/python-modules/jmespath { };
 
   jmp = callPackage ../development/python-modules/jmp { };
