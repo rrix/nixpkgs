@@ -6,7 +6,7 @@
   propagateBeets ? false
 }:
 
-python3Packages.buildPythonApplication {
+python3Packages.buildPythonPackage {
   pname = "beets-beetcamp";
   version = "unstable-2022-06-07";
 
