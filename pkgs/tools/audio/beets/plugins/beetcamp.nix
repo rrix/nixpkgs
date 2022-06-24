@@ -22,6 +22,12 @@ python3Packages.buildPythonApplication {
   propagatedBuildInputs = with python3Packages; [ setuptools poetry requests cached-property pycountry dateutil ordered-set ]
                                                 ++ (lib.optional propagateBeets [ beets ]);
 
+  postInstall = ''
+    rm $out/lib/python*/site-packages/LICENSE
+    mkdir -p $out/share/doc/beetcamp
+    mv $out/lib/python*/site-packages/README.md $out/share/doc/beetcamp/README.md
+  '';
+
   checkInputs = with python3Packages; [
     # pytestCheckHook
     pytest-cov
