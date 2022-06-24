@@ -4511,6 +4511,7 @@ with pkgs;
 
   beetsPackages = lib.recurseIntoAttrs (callPackage ../tools/audio/beets { });
   inherit (beetsPackages) beets beets-unstable;
+
   beetcamp = beetsPackages.beetcamp.override({propagateBeets = true;});
 
   bento4 = callPackage ../tools/video/bento4 { };
@@ -35622,7 +35623,7 @@ with pkgs;
 
   mictray = callPackage ../tools/audio/mictray { };
 
-  vpype = python3Packages.callPackage ../applications/graphics/vpype { };
+  vpype = with python3Packages; toPythonApplication (callPackage ../applications/graphics/vpype { });
 
-  vsketch = python3Packages.callPackage ../applications/graphics/vsketch { };
+  vsketch = with python3Packages; toPythonApplication (callPackage ../applications/graphics/vsketch { });
 }
