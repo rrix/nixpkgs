@@ -19,6 +19,9 @@
 , qt5
 }:
 
+let
+  vpype-rev = "6a099b7b4f3d756f7fa8052049be365d0314c5ee";
+in
 buildPythonPackage rec {
   pname = "vsketch";
   version = "1.0.0-alpha.0";
@@ -26,8 +29,8 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "abey79";
     repo = "vsketch";
-    rev = "0d937c851ac528bf182d0b71eb42ead525848c60";
-    sha256 = "sha256-J04/yRAIMuCt6z+FT+bkV+h8sz7igg/mMyVsMOEMJhE=";
+    rev = "1e9ebc540a3ef873d39e04e728a8e96a3faedb80";
+    sha256 = "sha256-OhB94Vpgcl6P8dt96B+Z5EKMdO0kN/Bc95rBcF2Wd+g=";
   };
 
   format = "pyproject";
@@ -42,7 +45,8 @@ buildPythonPackage rec {
   ];
 
   postPatch = ''
-    substituteInPlace pyproject.toml --replace 'vpype = {extras = ["all"], git = "https://github.com/abey79/vpype", rev = "6f28cef03ebae5d12420b9c14648bb3588c05e57"}' 'vpype = "^1.10.0"'
+    substituteInPlace pyproject.toml --replace 'vpype = {extras = ["all"], git = "https://github.com/abey79/vpype", rev = "${vpype-rev}"}' 'vpype = "^1.11.0a0"' \
+
     sed -i '/PySide2/d' pyproject.toml # no idea why there isnt a dist-info written...
   '';
 

@@ -27,14 +27,14 @@
 
 buildPythonPackage rec {
   pname = "vpype";
-  version = "1.10.0";
+  version = "1.11.0-alpha.0";
 
   src = fetchFromGitHub {
     # https://github.com/abey79/vpype
     owner = "abey79";
     repo = "vpype";
-    rev = version;
-    sha256 = "sha256-eecLBUVH4TCqaMPNvoMB7E6VNTtBLeoEcDsFEliv1Ig=";
+    rev = "6a099b7b4f3d756f7fa8052049be365d0314c5ee";
+    sha256 = "sha256-C15bO+Z5u29mfGULgK173AYWnYlPesdzrxPqb0j/goc=";
   };
 
   format = "pyproject";
