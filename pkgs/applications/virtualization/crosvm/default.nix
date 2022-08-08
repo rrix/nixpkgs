@@ -1,5 +1,6 @@
 { stdenv, lib, rustPlatform, fetchgit
-, pkg-config, wayland-scanner, libcap, minijail, wayland, wayland-protocols
+, minijail-tools, pkg-config, wayland-scanner
+, libcap, libdrm, libepoxy, minijail, virglrenderer, wayland, wayland-protocols
 , linux
 }:
 
@@ -28,23 +29,32 @@ in
 
     cargoLock.lockFile = ./Cargo.lock;
 
-    nativeBuildInputs = [ pkg-config wayland-scanner ];
+    nativeBuildInputs = [ minijail-tools pkg-config wayland-scanner ];
 
-    buildInputs = [ libcap minijail wayland wayland-protocols ];
+    buildInputs = [
+      libcap libdrm libepoxy minijail virglrenderer wayland wayland-protocols
+    ];
 
     postPatch = ''
       cp ${./Cargo.lock} Cargo.lock
-      sed -i "s|/usr/share/policy/crosvm/|$out/share/policy/|g" \
-             seccomp/*/*.policy
+      sed -i "s|/usr/share/policy/crosvm/|$PWD/seccomp/${arch}/|g" \
+          seccomp/${arch}/*.policy
     '';
 
     preBuild = ''
       export DEFAULT_SECCOMP_POLICY_DIR=$out/share/policy
+
+      for policy in seccomp/${arch}/*.policy; do
+          compile_seccomp_policy \
+              --default-action trap $policy ''${policy%.policy}.bpf
+      done
     '';
+
+    buildFeatures = [ "default" "virgl_renderer" "virgl_renderer_next" ];
 
     postInstall = ''
       mkdir -p $out/share/policy/
-      cp seccomp/${arch}/* $out/share/policy/
+      cp -v seccomp/${arch}/*.bpf $out/share/policy/
     '';
 
     CROSVM_CARGO_TEST_KERNEL_BINARY =
