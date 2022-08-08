@@ -33,6 +33,14 @@ buildPythonPackage rec {
     hash = "sha256-EakC/rSIS42Q4Y0pvWKG7mzppU5KjCktnC09iFMZM0A=";
   };
 
+  patches = [
+    ./pyproject-define-version.patch
+  ];
+
+  postPatch = ''
+     substituteInPlace pyproject.toml --subst-var-by "version" "${version}"
+  '';
+
   nativeBuildInputs = [
   ] ++ (with rustPlatform; [
     cargoSetupHook

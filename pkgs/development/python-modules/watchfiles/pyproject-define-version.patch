@@ -1,0 +1,19 @@
+ pyproject.toml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/pyproject.toml b/pyproject.toml
+index b32b295..f813015 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -34,10 +34,10 @@ classifiers = [
+     'Topic :: System :: Filesystems',
+     'Framework :: AnyIO',
+ ]
++version = "@version@"
+ dynamic = [
+     "license",
+     "readme",
+-    "version"
+ ]
+ 
+ [project.scripts]
