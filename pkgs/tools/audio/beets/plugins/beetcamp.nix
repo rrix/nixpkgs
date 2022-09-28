@@ -19,7 +19,7 @@ python3Packages.buildPythonPackage {
 
   format = "pyproject";
 
-  propagatedBuildInputs = with python3Packages; [ setuptools poetry requests cached-property pycountry dateutil ordered-set ]
+  propagatedBuildInputs = with python3Packages; [ setuptools poetry requests cached-property pycountry python-dateutil ordered-set ]
                                                 ++ (lib.optional propagateBeets [ beets ]);
 
   postInstall = ''
