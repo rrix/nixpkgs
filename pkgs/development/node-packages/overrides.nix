@@ -167,6 +167,10 @@ final: prev: {
     meta = oldAttrs.meta // { broken = since "10"; };
   });
 
+  graphite-cli = prev."@withgraphite/graphite-cli".override {
+    name = "graphite-cli";
+  };
+
   graphql-language-service-cli = prev.graphql-language-service-cli.override {
     nativeBuildInputs = [ pkgs.buildPackages.makeWrapper ];
     postInstall = ''
@@ -357,7 +361,7 @@ final: prev: {
 
     src = fetchurl {
       url = "https://registry.npmjs.org/prisma/-/prisma-${version}.tgz";
-      sha512 = "sha512-HuYqnTDgH8atjPGtYmY0Ql9XrrJnfW7daG1PtAJRW0E6gJxc50lY3vrIDn0yjMR3TvRlypjTcspQX8DT+xD4Sg==";
+      sha512 = "sha512-l/QKLmLcKJQFuc+X02LyICo0NWTUVaNNZ00jKJBqwDyhwMAhboD1FWwYV50rkH4Wls0RviAJSFzkC2ZrfawpfA==";
     };
     postInstall = with pkgs; ''
       wrapProgram "$out/bin/prisma" \
@@ -549,6 +553,16 @@ final: prev: {
   webtorrent-cli = prev.webtorrent-cli.override {
     buildInputs = [ final.node-gyp-build ];
   };
+
+  wrangler = prev.wrangler.override (oldAttrs: {
+    dontNpmInstall = true;
+    nativeBuildInputs = [ pkgs.buildPackages.makeWrapper ];
+    postInstall = ''
+      makeWrapper "$out/lib/node_modules/wrangler/bin/wrangler.js" "$out/bin/wrangler" \
+        --inherit-argv0
+    '';
+    meta = oldAttrs.meta // { broken = before "16.13"; };
+  });
 
   yaml-language-server = prev.yaml-language-server.override {
     nativeBuildInputs = [ pkgs.buildPackages.makeWrapper ];
