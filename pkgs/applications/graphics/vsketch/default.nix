@@ -30,7 +30,8 @@ buildPythonPackage rec {
     owner = "abey79";
     repo = "vsketch";
     rev = "1e9ebc540a3ef873d39e04e728a8e96a3faedb80";
-    sha256 = "sha256-OhB94Vpgcl6P8dt96B+Z5EKMdO0kN/Bc95rBcF2Wd+g=";
+    sha256 = "1s3pjrfp1hcsyxfg0dr4xms8qhp4k4gyhzfvy67mwwk0bbhps41s";
+    # date = "2022-06-27T11:14:11+02:00";
   };
 
   format = "pyproject";
@@ -46,6 +47,7 @@ buildPythonPackage rec {
 
   postPatch = ''
     substituteInPlace pyproject.toml --replace 'vpype = {extras = ["all"], git = "https://github.com/abey79/vpype", rev = "${vpype-rev}"}' 'vpype = "^1.11.0a0"' \
+                                     --replace 'Shapely = {extras = ["vectorized"], version = "1.8.2"}' 'Shapely = {extras = ["vectorized"], version = "1.8.4"}'
 
     sed -i '/PySide2/d' pyproject.toml # no idea why there isnt a dist-info written...
   '';
