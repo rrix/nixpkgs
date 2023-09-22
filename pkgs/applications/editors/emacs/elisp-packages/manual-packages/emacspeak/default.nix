@@ -6,22 +6,24 @@
 , tcl
 , tclx
 , espeak-ng
+, alsa-utils
 }:
 
 stdenv.mkDerivation rec {
   pname = "emacspeak";
-  version = "56.0";
+  version = "58.0";
 
   src = fetchFromGitHub {
     owner = "tvraman";
     repo = pname;
     rev = version;
-    hash= "sha256-juy+nQ7DrG818/uTH6Dv/lrrzu8qzPWwi0sX7JrhHK8=";
+    sha256 = "sha256-5pWC17nvy3ZuG0bR//LqDVpKsH5hFSFf63Q33a1BfBk=";
   };
 
   nativeBuildInputs = [
     emacs
     makeWrapper
+    alsa-utils
   ];
   buildInputs = [
     espeak-ng
@@ -47,6 +49,7 @@ stdenv.mkDerivation rec {
     makeWrapper ${emacs}/bin/emacs $out/bin/emacspeak \
         --set DTK_PROGRAM "${placeholder "out"}/share/emacs/site-lisp/emacspeak/servers/espeak" \
         --set TCLLIBPATH "${tclx}/lib" \
+        --prefix PATH : "${alsa-utils}/bin" \
         --add-flags '-l "${placeholder "out"}/share/emacs/site-lisp/emacspeak/lisp/emacspeak-setup.elc"'
   '';
 
