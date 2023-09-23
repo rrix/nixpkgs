@@ -38,6 +38,10 @@ in myNodePackages.package.override {
     exec ${nodejs}/bin/node $out/lib/node_modules/@mx-puppet/discord/build/index.js "\$@"
     EOF
     chmod +x $out/bin/mx-puppet-discord
+
+    # patch dep
+    substituteInPlace $out/lib/node_modules/@mx-puppet/discord/node_modules/@sorunome/matrix-bot-sdk/lib/appservice/Appservice.js \
+      --replace 'req.headers["Authorization"]' 'req.get("Authorization")'
   '';
 
   meta = with lib; {
