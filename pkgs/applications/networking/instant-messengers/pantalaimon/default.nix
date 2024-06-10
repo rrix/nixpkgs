@@ -4,6 +4,7 @@
 , fetchFromGitHub
 , installShellFiles
 , nixosTests
+, glib
 , enableDbusUi ? true
 }:
 
@@ -64,6 +65,20 @@ python3Packages.buildPythonApplication rec {
 
   # darwin has difficulty communicating with server, fails some integration tests
   doCheck = !stdenv.isDarwin;
+
+  postFixup = if
+    enableDbusUi
+    then
+      let
+        typelibPath = lib.makeSearchPath "/lib/girepository-1.0" [
+          (placeholder "out")
+          (lib.getLib glib)
+        ];
+      in ''
+        wrapProgram "$out/bin/pantalaimon" \
+          --prefix GI_TYPELIB_PATH : "$GI_TYPELIB_PATH:${typelibPath}"
+      ''
+    else "";
 
   postInstall = ''
     installManPage docs/man/*.[1-9]
